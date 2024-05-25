@@ -1,31 +1,4 @@
-export const colorCode = (colorCode: string): number | string => {
-  switch (colorCode) {
-    case COLORS[0]:
-      return 0;
-    case COLORS[1]:
-      return 1;
-    case COLORS[2]:
-      return 2;
-    case COLORS[3]:
-      return 3;
-    case COLORS[4]:
-      return 4;
-    case COLORS[5]:
-      return 5;
-    case COLORS[6]:
-      return 6;
-    case COLORS[7]:
-      return 7;
-    case COLORS[8]:
-      return 8;
-    case COLORS[9]:
-      return 9;
-    default:
-      throw new Error("Unknow color code");
-  }
-};
-
-export const COLORS: string[] = [
+export const COLORS = [
   "black",
   "brown",
   "red",
@@ -36,4 +9,29 @@ export const COLORS: string[] = [
   "violet",
   "grey",
   "white",
-];
+] as const;
+
+type Color = (typeof COLORS)[number];
+
+const colorMap: { [key in Color]: number } = {
+  black: 0,
+  brown: 1,
+  red: 2,
+  orange: 3,
+  yellow: 4,
+  green: 5,
+  blue: 6,
+  violet: 7,
+  grey: 8,
+  white: 9,
+};
+
+export const colorCode = (color: Color): number => {
+  return colorMap[color];
+};
+
+export const colors = (): readonly Color[] => {
+  return COLORS;
+};
+
+console.log(colorCode(COLORS[0]));
