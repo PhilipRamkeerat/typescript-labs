@@ -37,49 +37,25 @@ enum ResistorThresholds {
 }
 
 // Function to get the numeric value of a color
-export const colorCode = (color: Color): number => {
-  return colorMap[color];
-};
-
-// Function to decode the resistor value from an array of colors
-export function decodedResistorValue(colorsArray: Array<Color>): string {
-  // Destructure the array to get the first, second, and third colors
-  const [first, second, third] = colorsArray;
-
-  // Validate the colors
-  validateColors(first, second, third);
-
-  // Get the numeric values of the colors
-  const firstDigit = colorCode(first);
-  const secondDigit = colorCode(second);
-  const multiplier = colorCode(third);
-
-  // Calculate the initial group value
-  const baseValue = firstDigit * 10 + secondDigit;
-  const finalValue = addZerosToRight(baseValue, multiplier);
-
-  // Determine the appropriate unit (ohms, kiloohms, megaohms, gigaohms)
-  return formatResistorValue(finalValue);
-}
+export const colorCode = (color: Color): number => colorMap[color];
 
 // Helper function to validate the input colors
-function validateColors(first: Color, second: Color, third: Color): void {
-  if (
-    !COLORS.includes(first) ||
-    !COLORS.includes(second) ||
-    !COLORS.includes(third)
-  ) {
-    throw new Error(`Invalid color value(s): ${[first, second, third]}`);
-  }
+function validateColors(colors: Array<Color>): void {
+  colors.forEach((color) => {
+    if (!COLORS.includes(color)) {
+      throw new Error(`Invalid color value: ${color}`);
+    }
+  });
 }
 
-// Helper function to add zeros to the right of a number
-function addZerosToRight(number: number, zeros: number): number {
-  // Convert the number to a string and pad it with zeros to the right
-  const numberStr = number
-    .toString()
-    .padEnd(number.toString().length + zeros, "0");
-  return parseInt(numberStr, 10);
+// Helper function to calculate the base value from the first two colors
+function calculateBaseValue(first: Color, second: Color): number {
+  return colorCode(first) * 10 + colorCode(second);
+}
+
+// Helper function to apply the multiplier and calculate the final value
+function applyMultiplier(baseValue: number, multiplierColor: Color): number {
+  return baseValue * Math.pow(10, colorCode(multiplierColor));
 }
 
 // Helper function to format the resistor value with appropriate units
@@ -93,4 +69,22 @@ function formatResistorValue(value: number): string {
   } else {
     return `${value} ohms`;
   }
+}
+
+// Function to decode the resistor value from an array of colors
+export function decodedResistorValue(colorsArray: Array<Color>): string {
+  // Destructure the array to get the first, second, and third colors
+  const [first, second, third] = colorsArray;
+
+  // Validate the colors
+  validateColors([first, second, third]);
+
+  // Calculate the base value
+  const baseValue = calculateBaseValue(first, second);
+
+  // Calculate the final resistor value by applying the multiplier
+  const finalValue = applyMultiplier(baseValue, third);
+
+  // Format and return the resistor value with appropriate units
+  return formatResistorValue(finalValue);
 }
