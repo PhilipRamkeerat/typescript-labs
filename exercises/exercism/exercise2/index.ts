@@ -30,33 +30,18 @@ export const colorCode = (color: Color): number => {
   return colorMap[color];
 };
 
-export const colors = (): readonly Color[] => {
-  return COLORS;
-};
-
-export const addDigitToNumber = (
-  currentNumber: number,
-  digit: number
-): number => {
-  const result = `${currentNumber}${digit}`;
-  return Number(result);
-};
-
 export function decodedValue(colorsArray: string[]): number {
-  if (colorsArray.length > 2) {
-    colorsArray = colorsArray.slice(0, 2);
+  const [firstColor, secondColor] = colorsArray;
+
+  if (
+    !COLORS.includes(firstColor as Color) ||
+    !COLORS.includes(secondColor as Color)
+  ) {
+    throw new Error(`Invalid color value(s): ${colorsArray}`);
   }
 
-  let result = 0;
+  const firstDigit = colorCode(firstColor as Color);
+  const secondDigit = colorCode(secondColor as Color);
 
-  colorsArray.forEach((word) => {
-    if (COLORS.includes(word as Color)) {
-      const color = word as Color;
-      result = addDigitToNumber(result, colorCode(color));
-    } else {
-      throw new Error(`Invalid color value: ${word}`);
-    }
-  });
-
-  return result;
+  return firstDigit * 10 + secondDigit;
 }
