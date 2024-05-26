@@ -51,7 +51,8 @@ export function decodedValue(colorsArray: string[]): number {
 
   colorsArray.forEach((word) => {
     if (COLORS.includes(word as Color)) {
-      result = addDigitToNumber(result, colorCode(word as Color));
+      const color = word as Color;
+      result = addDigitToNumber(result, colorCode(color));
     } else {
       throw new Error(`Invalid color value: ${word}`);
     }
