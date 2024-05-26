@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "exercise1": "ts-node exercises/exercism/exercise1/index.ts",
-    "exercise2": "ts-node exercises/exercism/exercise2/index.ts"
+    "exercise2": "ts-node exercises/exercism/exercise2/index.ts",
+    "exercise3": "ts-node exercises/exercism/exercise3/index.ts"
   },
   "repository": {
     "type": "git",
