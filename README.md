@@ -6,7 +6,10 @@ Welcome to the TypeScript Labs repository! This repository is dedicated to exerc
 
 ### Exercism Exercises
 
+- [Exercism Folder](exercises/exercism/)
 - [Exercise 1](exercises/exercism/exercise1)
+- [Exercise 2](exercises/exercism/exercise2)
+- [Exercise 3](exercises/exercism/exercise3)
 
 ## Getting Started
 
